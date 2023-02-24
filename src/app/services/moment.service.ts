@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Moment } from '../Moment';
+import { Response } from '../Response';
 
 import { environment } from 'environments/environment';
 
@@ -19,7 +20,7 @@ export class MomentService {
     return this.http.post<FormData>(this.apiUrl, formData);
   }
 
-  fetchMoment() {
-    return this.http.get(this.apiUrl);
+  getMoments(): Observable<Response<Moment[]>> {
+    return this.http.get<Response<Moment[]>>(this.apiUrl);
   }
 }
