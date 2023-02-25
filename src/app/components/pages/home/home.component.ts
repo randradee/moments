@@ -6,6 +6,7 @@ import { Moment } from 'src/app/Moment';
 import { Response } from 'src/app/Response';
 
 import { environment } from 'environments/environment';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 // import { faSearch } from '@fontawesome/free-solid-svg-icons';
 @Component({
@@ -19,7 +20,8 @@ export class HomeComponent {
   baseApiUrl = environment.baseApiUrl;
   apiUrl = `${this.baseApiUrl}/moments`;
 
-  // todo search
+  faSearch = faSearch;
+  searchTerm: string = '';
 
   constructor(private momentService: MomentService) {}
 
@@ -35,6 +37,14 @@ export class HomeComponent {
 
       this.moments = data;
       this.filteredMoments = data;
+    });
+  }
+
+  filterMoments(event: any): void {
+    this.searchTerm = event.target.value;
+
+    this.filteredMoments = this.moments.filter((moment) => {
+      return moment.title.toLowerCase().includes(this.searchTerm);
     });
   }
 }
