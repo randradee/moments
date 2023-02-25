@@ -18,7 +18,6 @@ export class HomeComponent {
   moments: Moment[] = [];
   filteredMoments: Moment[] = [];
   baseApiUrl = environment.baseApiUrl;
-  apiUrl = `${this.baseApiUrl}/moments`;
 
   faSearch = faSearch;
   searchTerm: string = '';

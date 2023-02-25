@@ -1,0 +1,10 @@
+<div class="moment" *ngIf="moment">
+  <img
+    src="{{ baseApiUrl }}/uploads/{{ moment.image }}"
+    alt="{{ moment.title }}"
+  />
+  <h3>{{ moment.title }}</h3>
+  <p class="date">Em: {{ moment.created_at }}</p>
+  <p>Comentários: {{ moment.comments!.length }}</p>
+  <p><a routerLink="moments/{{ moment.id }}">Detalhes</a></p>
+</div>
