@@ -3,9 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'environments/environment';
 
 import { MomentService } from 'src/app/services/moment.service';
+import { MessagesService } from 'src/app/services/messages.service';
 
 import { Moment } from 'src/app/Moment';
-import { Observable } from 'rxjs';
+
+import { faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-moment',
@@ -15,11 +17,14 @@ import { Observable } from 'rxjs';
 export class MomentComponent {
   moment?: Moment;
   baseApiUrl = environment.baseApiUrl;
+  faTimes = faTimes;
+  faEdit = faEdit;
 
   constructor(
     private momentService: MomentService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private messagesService: MessagesService
   ) {}
 
   ngOnInit(): void {
@@ -28,5 +33,19 @@ export class MomentComponent {
     this.momentService.getMoment(id).subscribe((item) => {
       this.moment = item.data;
     });
+  }
+
+  async deleteMoment() {
+    const thisMomentId = this.activatedRoute.snapshot.paramMap.get('id');
+    const message = await this.momentService
+      .deleteMoment(Number(thisMomentId))
+      .subscribe((item) => {
+        return item.message;
+      });
+    console.log(message.toString());
+    if (message.toString() == `Momento ${thisMomentId} excluído com sucesso`) {
+      this.messagesService.addMessage('Momento criado com sucesso!');
+      this.router.navigate(['/']);
+    }
   }
 }
