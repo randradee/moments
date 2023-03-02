@@ -35,17 +35,10 @@ export class MomentComponent {
     });
   }
 
-  async deleteMoment() {
-    const thisMomentId = this.activatedRoute.snapshot.paramMap.get('id');
-    const message = await this.momentService
-      .deleteMoment(Number(thisMomentId))
-      .subscribe((item) => {
-        return item.message;
-      });
-    console.log(message.toString());
-    if (message.toString() == `Momento ${thisMomentId} excluído com sucesso`) {
-      this.messagesService.addMessage('Momento criado com sucesso!');
-      this.router.navigate(['/']);
-    }
+  async removeHandler(id: number) {
+    await this.momentService.deleteMoment(id).subscribe();
+    console.log(id);
+    this.messagesService.addMessage('Momento excluído com sucesso!');
+    this.router.navigate(['/']);
   }
 }
