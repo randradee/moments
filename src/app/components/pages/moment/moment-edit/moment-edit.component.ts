@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Moment } from 'src/app/Moment';
 
 import { MomentService } from 'src/app/services/moment.service';
+import { MessagesService } from 'src/app/services/messages.service';
 
 @Component({
   selector: 'app-moment-edit',
@@ -17,7 +18,8 @@ export class MomentEditComponent {
   constructor(
     private momentService: MomentService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private messagesService: MessagesService
   ) {}
 
   ngOnInit(): void {
@@ -28,5 +30,21 @@ export class MomentEditComponent {
     });
   }
 
-  editHandler(event: any) {}
+  async editHandler(moment: Moment) {
+    const id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    const formData = new FormData();
+
+    formData.append('title', moment.title);
+    formData.append('description', moment.description);
+
+    if (moment.image) {
+      formData.append('image', moment.image);
+    }
+
+    await this.momentService.editMoment(formData, id).subscribe();
+
+    this.messagesService.addMessage('Momento editado com sucesso!');
+
+    this.router.navigate([`moments/${id}`]);
+  }
 }
